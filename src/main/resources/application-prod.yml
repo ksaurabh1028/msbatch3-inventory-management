@@ -1,0 +1,8 @@
+---
+spring:
+  application:
+    name: orders
+  cloud:
+    config:
+      uri: http://localhost:8080    # Where should we call the config server at?
+  profiles: prod
