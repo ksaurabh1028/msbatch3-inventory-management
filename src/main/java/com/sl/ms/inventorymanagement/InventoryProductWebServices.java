@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,7 +19,7 @@ import net.minidev.json.parser.JSONParser;
 
 @RestController
 public class InventoryProductWebServices {
-
+  private static Logger logger = LoggerFactory.getLogger(InventoryProductWebServices.class);
   ProductRepository productRepo;
   InventoryRepository inventoryRepo;
   
@@ -27,10 +29,10 @@ public class InventoryProductWebServices {
   }
 
   @RequestMapping(value = "/products/file", method = RequestMethod.POST, consumes = { "multipart/form-data" })
-  public String uploadFile(@RequestParam("file") MultipartFile file, 
-          @RequestParam("date") Date date,
-      @RequestParam("id") Long id) {
+  public Inventory uploadFile(@RequestParam("file") MultipartFile file) {
 
+    Date date = new Date();
+    logger.info("Uploading Inventory file");
     Inventory inv;
     Set<Product> prodList = new HashSet<Product>();
     try {
@@ -39,22 +41,20 @@ public class InventoryProductWebServices {
       JSONParser jsonParser = new JSONParser();
       Object obj = jsonParser.parse(file.getInputStream());
       JSONArray productList = (JSONArray) obj;
-      System.out.println(productList);
+      logger.info("Product List:" + productList);
 
-      // Iterate over employee array
       productList.forEach(prd -> parseProductObject((JSONObject) prd, prodList));
       System.out.println("Data" + prodList);
 
-      inv = new Inventory(id, date, productList);
+      inv = new Inventory(date, productList);
 
     } catch (IOException | net.minidev.json.parser.ParseException e) {
       inv = new Inventory();
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+      logger.error(e.getMessage());
     }
     inventoryRepo.save(inv);
 
-    return "Success";
+    return inventoryRepo.save(inv);
 
   }
 
