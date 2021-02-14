@@ -52,7 +52,7 @@
         <configuration>
           <source>15</source> 
           <target>15</target>
-          <release>12</release>
+          <release>15</release>
         </configuration>
       </plugin>
       <plugin>
