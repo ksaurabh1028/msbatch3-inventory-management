@@ -12,10 +12,10 @@ node {
 	    
 	    stage('Clone Repo') { // for display purposes
 	      // Get some code from a GitHub repository
-	      //git 'https://github.com:ksaurabh1028/msbatch3-inventory-management.git'
-	      git (branch: 'main',
+	      git 'https://github.com:ksaurabh1028/msbatch3-inventory-management'
+	 /*     git (branch: 'main',
     		credentialsId: 'ass',
-    		url: 'https://github.com:ksaurabh1028/msbatch3-inventory-management.git')
+    		url: 'https://github.com:ksaurabh1028/msbatch3-inventory-management.git')*/
 	      // Get the Maven tool.        
 	      mvnHome = tool 'Maven3.6.3'
 	    }    
