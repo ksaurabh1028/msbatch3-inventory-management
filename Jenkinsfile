@@ -41,10 +41,15 @@ node {
 		  sh "docker rm inventory-management"
 		  
 		  sh "docker run --name inventory-management -d -p 8888:8888 inventory-management:${env.BUILD_NUMBER}"
-		  
-		  // docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-	      //    dockerImage.push("${env.BUILD_NUMBER}")
-	      //      dockerImage.push("latest")
-	      //  }
+		
 	    }
+	
+	stage('Upload to Docker hub') {
+		
+		echo "Docker Image to be Uploaded"
+		docker.withRegistry('https://registry.hub.docker.com', 'jenkins-docker') {
+	            dockerImage.push("${env.BUILD_NUMBER}")
+	      //      dockerImage.push("latest")
+	        }
+	}
    }
