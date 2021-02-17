@@ -8,7 +8,7 @@ node {
 	    def dockerImage
 	    // ip address of the docker private repository(nexus)
 	 
-	    def dockerImageTag = "inventory-management${env.BUILD_NUMBER}"
+	    def dockerImageTag = "saurabh1028/inventory-management${env.BUILD_NUMBER}"
 	    
 	    stage('Clone Repo') { // for display purposes
 	      // Get some code from a GitHub repository
@@ -27,7 +27,7 @@ node {
 			
 	    stage('Build Docker Image') {
 	      // build docker image
-	      dockerImage = docker.build("inventory-management:${env.BUILD_NUMBER}")
+	      dockerImage = docker.build("saurabh1028/inventory-management:${env.BUILD_NUMBER}")
 	    }
 	   
 	    stage('Deploy Docker Image'){
@@ -40,7 +40,7 @@ node {
 		  
 		  sh "docker rm inventory-management"
 		  
-		  sh "docker run --name inventory-management -d -p 8888:8888 inventory-management:${env.BUILD_NUMBER}"
+		  sh "docker run --name inventory-management -d -p 8888:8888 saurabh1028/inventory-management:${env.BUILD_NUMBER}"
 		
 	    }
 	
@@ -49,7 +49,7 @@ node {
 		echo "Docker Image to be Uploaded"
 		docker.withRegistry('https://registry.hub.docker.com', 'jenkins-docker') {
 	            dockerImage.push("${env.BUILD_NUMBER}")
-	      //      dockerImage.push("latest")
+	           // dockerImage.push("latest")
 	        }
 	}
    }
